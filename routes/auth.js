@@ -38,13 +38,13 @@ authRouter.post('/api/signin', async (req, res) => {
             if (!isMatch) {
                 return res.status(400).json({ msg: `Incorrect Password` });
             } else {
-                const Authorization = jwt.sign({ id: findUser._id }, "passwordKey");
+                const authorization = jwt.sign({ id: findUser._id }, "passwordKey");
 
                 //remove sensitive information
                 const { password, ...userWithoutPassword } = findUser._doc;
 
                 //send the responses
-                res.json({ Authorization, ...userWithoutPassword });
+                res.json({ authorization, ...userWithoutPassword });
             }
         }
 
