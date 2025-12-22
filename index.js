@@ -9,12 +9,14 @@ const categoryRouter = require('./routes/category');
 const subCategoryRouter = require('./routes/subCategory');
 const productRouter = require('./routes/product')
 const productReview = require('./routes/product_review');
+const vendorRouter = require(`./routes/vendor`);
+const orderRouter = require('./routes/order');
+
 const cors = require('cors');
 //Define the port number the server will listen on 
 const PORT = 3000;
-
 //Create an instance of an express application
-//because it give us the starting point
+//because it gsive us the starting point
 
 const app = express();
 //mongodb string
@@ -29,6 +31,9 @@ app.use(categoryRouter);
 app.use(subCategoryRouter);
 app.use(productRouter);
 app.use(productReview);
+app.use(vendorRouter);
+app.use(orderRouter);
+
 //middleware - to register routes or to mount routes
 //app.use(helloRoute);
 

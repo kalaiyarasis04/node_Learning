@@ -4,8 +4,8 @@ const productRouter = express.Router();
 
 productRouter.post('/api/add-product', async (req, res) => {
     try {
-        const { productName, productPrice, quantity, description, category, subCategory, images } = req.body;
-        const product = new Product({ productName, productPrice, quantity, description, category, subCategory, images });
+        const { productName, productPrice, quantity, description, category, vendorId, fullName,subCategory, images } = req.body;
+        const product = new Product({ productName, productPrice, quantity, description, category,vendorId, fullName, subCategory, images });
         await product.save();
         return res.status(201).send(product);
     } catch (e) {
@@ -26,7 +26,7 @@ productRouter.get('/api/product', async (req, res) => {
 productRouter.get('/api/popular-products', async (req, res) => {
 
     try {
-        const product = await Product.find({popular:true});
+        const product = await Product.find({popular:false});
         if( !product || product.length == 0){
             return res.status(404).json({ msg: 'products not found' });
         }else{
@@ -49,6 +49,20 @@ productRouter.get('/api/recommend-products', async (req, res) => {
     } catch (e) {
         res.status(500).json({})
     }
+});
+//new route for retrieving products by category
+productRouter.get('/api/products-by-category/:category', async(req,res)=>{
+  try {
+    const {category} = req.params;
+    const products =  await Product.find({category,popular:true});
+    if(!products|| products.length==0){
+      return res.status(404).json({msg:"Product not found"});
+    }else{
+      return res.status(200).json(products);
+    }
+  } catch (e) {
+    res.status(500).json({error:e.message});
+  }
 });
 
 module.exports = productRouter;

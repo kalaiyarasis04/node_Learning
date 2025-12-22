@@ -1,11 +1,12 @@
 const express = require('express');
 const orderRouter = express.Router();
 const Order = require('../models/order');
-const stripe = require('stripe')("sk_test_51QNDjeFCHOE81U8oeh3pjG5nkCLb58x6vbQ3gDowB2Xkh77gsdQdW8a1twJI7iVSOGNZ74C7LqGE6nAQQzEkURPB00b3rhJSQQ");
-const { auth, vendorAuth } = require('../middleware/auth');
+//const stripe = require('stripe')("sk_test_51QNDjeFCHOE81U8oeh3pjG5nkCLb58x6vbQ3gDowB2Xkh77gsdQdW8a1twJI7iVSOGNZ74C7LqGE6nAQQzEkURPB00b3rhJSQQ");
+//const { auth, vendorAuth } = require('../middleware/auth');
 
 // Post route for creating orders
-orderRouter.post('/api/orders', auth, async (req, res) => {
+//orderRouter.post('/api/orders', auth, async (req, res) => {
+orderRouter.post('/api/orders', async (req, res) => {
   try {
     const {
       fullName,
@@ -57,7 +58,7 @@ orderRouter.post('/api/orders', auth, async (req, res) => {
 
 
 
-orderRouter.post('/api/payment-intent',auth,async (req,res)=>{
+/*orderRouter.post('/api/payment-intent',auth,async (req,res)=>{
   try {
     const {amount, currency} = req.body;
 
@@ -70,8 +71,9 @@ orderRouter.post('/api/payment-intent',auth,async (req,res)=>{
   } catch (e) {
     return res.status(500).json({error:e.message});
   }
-});
+});*/
 
+/*
 orderRouter.get('/api/payment-intent/:id',auth,async(req,res)=>{
    try {
     const paymentIntent = await stripe.paymentIntents.retrieve(req.params.id);
@@ -80,7 +82,9 @@ orderRouter.get('/api/payment-intent/:id',auth,async(req,res)=>{
     return res.status(500).json({error:e.message});
    }
 });
+*/
 
+/*
 // POST route for creating a customer on Stripe
 orderRouter.post('/api/stripe/customers', async (req, res) => {
   try {
@@ -101,6 +105,7 @@ orderRouter.post('/api/stripe/customers', async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 });
+*/
 
 
 // GET route for fetching orders by buyer ID
@@ -120,7 +125,7 @@ orderRouter.get('/api/orders/:buyerId', async (req, res) => {
 });
 
 // DELETE route for deleting a specific order by _id
-orderRouter.delete("/api/orders/:id",  async (req, res) => {
+orderRouter.delete("/api/orders/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deletedOrder = await Order.findByIdAndDelete(id);
@@ -135,8 +140,10 @@ orderRouter.delete("/api/orders/:id",  async (req, res) => {
   }
 });
 
+
 // GET route for fetching orders by vendor ID
-orderRouter.get('/api/orders/vendors/:vendorId', auth, vendorAuth, async (req, res) => {
+//orderRouter.get('/api/orders/vendors/:vendorId', auth, vendorAuth, async (req, res) => {
+orderRouter.get('/api/orders/vendors/:vendorId', async (req, res) => {
   try {
     const { vendorId } = req.params;
     const orders = await Order.find({ vendorId });
@@ -150,6 +157,7 @@ orderRouter.get('/api/orders/vendors/:vendorId', auth, vendorAuth, async (req, r
     res.status(500).json({ error: e.message });
   }
 });
+
 
 // PATCH route for marking order as delivered
 orderRouter.patch('/api/orders/:id/delivered', async (req, res) => {
@@ -177,7 +185,7 @@ orderRouter.patch('/api/orders/:id/processing', async (req, res) => {
     const { id } = req.params;
     const updatedOrder = await Order.findByIdAndUpdate(
       id,
-      { processing: true, delivered: false },
+      { processing: false, delivered: false },
       { new: true }
     );
 
