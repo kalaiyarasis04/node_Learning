@@ -15,40 +15,52 @@ const productSchema = mongoose.Schema({
         required: true
     },
 
-    description:{
-        type:String,
-        required:true
-    },
-
-    category:{
+    description: {
         type: String,
         required: true
     },
 
-    vendorId:{
-        type:String,
-        required:true,
+    category: {
+        type: String,
+        required: true
     },
-    fullName:{
-        type:String,
-        required:true,
+
+    vendorId: {
+        type: String,
+        required: true,
     },
-    subCategory:{
-        type:String,
-        required:String
+    fullName: {
+        type: String,
+        required: true,
     },
-    images:[{
-        type:String,
-        required:true
+    subCategory: {
+        type: String,
+        required: String
+    },
+    images: [{
+        type: String,
+        required: true
     }],
-    popular:{
-        type:Boolean,
-        default:false
+    popular: {
+        type: Boolean,
+        default: false
     },
-    recommend:{
-        type:Boolean,
-        default:false
-    }
+    recommend: {
+        type: Boolean,
+        default: false
+    },
+
+    //Add these fields for ratings
+
+    averageRating: {
+        type: Number,
+        default: 0,
+    },
+    totalRatings: {
+        type: Number,
+        default: 0,
+    },
+
 });
 
 const Product = mongoose.model("Product", productSchema);
