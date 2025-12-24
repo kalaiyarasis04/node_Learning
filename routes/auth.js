@@ -2,6 +2,8 @@ const express = require(`express`);
 const User = require(`../models/user`);
 const bcrypt = require(`bcryptjs`);
 const jwt = require(`jsonwebtoken`);
+const {auth} = require('../middleware/auth');
+const Vendor = require('../models/vendor');
 
 const authRouter = express.Router();
 
@@ -106,7 +108,7 @@ authRouter.post('/tokenIsValid',async (req,res)=>{
  
 //Define a Get Route for the authentication router
 
-authRouter.get("/", async (req,res)=>{
+authRouter.get("/", auth, async (req,res)=>{
     try {
         //Retrieve the user data from the database  using the id from the authenticated user 
         const user = await User.findById(req.user);
@@ -118,4 +120,48 @@ authRouter.get("/", async (req,res)=>{
     }
  })
  
+ //Fetch all users(exclude password)
+
+authRouter.get('/api/users',async(req,res)=>{
+    try {
+      const users =  await User.find().select('-password');//Exclude password field
+      return  res.status(200).json(users);
+    } catch (e) {
+        res.status(500).json({error:e.message});
+    }
+});
+
+//Delete user or vendor API
+authRouter.delete('/api/user/delete-account/:id', auth, async(req,res)=>{
+    try {
+     ///Extract the ID from the request parameter 
+   
+     const {id} = req.params;
+     //check if a regular user or vendor with the provided ID exist in the Database
+    const user =  await User.findById(id)//MongoDb matches "id" to "_id";
+    const vendor = await Vendor.findById(id);
+   
+    //we can check if regular user or vendor 
+   
+    if(!user && !vendor){
+     return res.status(404).json({msg:"user or vendor not found"});
+    }
+   
+    ///Delete the user or vendor based on their type
+   
+    if(user){
+     await User.findByIdAndDelete(id);
+   
+   
+    }else if(vendor){
+     await Vendor.findByIdAndDelete(id);
+    }
+   
+    return res.status(200).json({msg:"User deleted successfully"});
+   
+    } catch (e) {
+      return res.status({error:e.message});
+    }
+   });
+
 module.exports = authRouter;

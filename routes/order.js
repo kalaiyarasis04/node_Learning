@@ -2,11 +2,10 @@ const express = require('express');
 const orderRouter = express.Router();
 const Order = require('../models/order');
 //const stripe = require('stripe')("sk_test_51QNDjeFCHOE81U8oeh3pjG5nkCLb58x6vbQ3gDowB2Xkh77gsdQdW8a1twJI7iVSOGNZ74C7LqGE6nAQQzEkURPB00b3rhJSQQ");
-//const { auth, vendorAuth } = require('../middleware/auth');
+const { auth, vendorAuth } = require('../middleware/auth');
 
 // Post route for creating orders
-//orderRouter.post('/api/orders', auth, async (req, res) => {
-orderRouter.post('/api/orders', async (req, res) => {
+orderRouter.post('/api/orders', auth, async (req, res) => {
   try {
     const {
       fullName,
@@ -111,7 +110,7 @@ orderRouter.post('/api/stripe/customers', async (req, res) => {
 
 
 // GET route for fetching orders by buyer ID
-orderRouter.get('/api/orders/:buyerId', async (req, res) => {
+orderRouter.get('/api/orders/:buyerId', auth, async (req, res) => {
   try {
     const { buyerId } = req.params;
     const orders = await Order.find({ buyerId });
@@ -127,7 +126,7 @@ orderRouter.get('/api/orders/:buyerId', async (req, res) => {
 });
 
 // DELETE route for deleting a specific order by _id
-orderRouter.delete("/api/orders/:id", async (req, res) => {
+orderRouter.delete("/api/orders/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
     const deletedOrder = await Order.findByIdAndDelete(id);
@@ -144,8 +143,7 @@ orderRouter.delete("/api/orders/:id", async (req, res) => {
 
 
 // GET route for fetching orders by vendor ID
-//orderRouter.get('/api/orders/vendors/:vendorId', auth, vendorAuth, async (req, res) => {
-orderRouter.get('/api/orders/vendors/:vendorId', async (req, res) => {
+orderRouter.get('/api/orders/vendors/:vendorId', auth, vendorAuth, async (req, res) => {
   try {
     const { vendorId } = req.params;
     const orders = await Order.find({ vendorId });

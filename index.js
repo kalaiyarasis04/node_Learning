@@ -14,7 +14,7 @@ const orderRouter = require('./routes/order');
 
 const cors = require('cors');
 //Define the port number the server will listen on 
-const PORT = 3000;
+const PORT = process.env.port || 3000;
 //Create an instance of an express application
 //because it gsive us the starting point
 
@@ -38,7 +38,7 @@ app.use(orderRouter);
 //app.use(helloRoute);
 
 mongoose.connect(DB).then(() => {
-    console.log(`Mongodb Connected`);
+  console.log(`Mongodb Connected`);
 
 });
 
@@ -47,19 +47,19 @@ db.on("error", console.error.bind(console, "connection error:"));
 
 
 db.once("open", () => {
-    console.log("Connected to MongoDB");
+  console.log("Connected to MongoDB");
 
-    const itemsCollection = db.collection("Lead");
-    
-    // --- GET API ---
-    app.get("/items", async (req, res) => {
-      try {
-        const items = await itemsCollection.find().toArray();
-        res.json(items);
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    });
+  const itemsCollection = db.collection("Lead");
+
+  // --- GET API ---
+  app.get("/items", async (req, res) => {
+    try {
+      const items = await itemsCollection.find().toArray();
+      res.json(items);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 });
 
 // app.get("/hello", (req, res) => {
@@ -68,8 +68,8 @@ db.once("open", () => {
 
 //start the server and listen on the specified port
 app.listen(PORT, "0.0.0.0", function () {
-    //LOG THE NUMBER
-    console.log(`server is running on port ${PORT}`);
+  //LOG THE NUMBER
+  console.log(`server is running on port ${PORT}`);
 });
 
 
