@@ -1,7 +1,7 @@
 const express = require('express');
 const orderRouter = express.Router();
 const Order = require('../models/order');
-//const stripe = require('stripe')("sk_test_51QNDjeFCHOE81U8oeh3pjG5nkCLb58x6vbQ3gDowB2Xkh77gsdQdW8a1twJI7iVSOGNZ74C7LqGE6nAQQzEkURPB00b3rhJSQQ");
+const stripe = require('stripe')("sk_test_51QNDjeFCHOE81U8oeh3pjG5nkCLb58x6vbQ3gDowB2Xkh77gsdQdW8a1twJI7iVSOGNZ74C7LqGE6nAQQzEkURPB00b3rhJSQQ");
 const { auth, vendorAuth } = require('../middleware/auth');
 
 // Post route for creating orders
