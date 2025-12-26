@@ -59,7 +59,7 @@ orderRouter.post('/api/orders', auth, async (req, res) => {
 
 
 
-/*orderRouter.post('/api/payment-intent',auth,async (req,res)=>{
+orderRouter.post('/api/payment-intent',auth,async (req,res)=>{
   try {
     const {amount, currency} = req.body;
 
@@ -72,9 +72,9 @@ orderRouter.post('/api/orders', auth, async (req, res) => {
   } catch (e) {
     return res.status(500).json({error:e.message});
   }
-});*/
+});
 
-/*
+
 orderRouter.get('/api/payment-intent/:id',auth,async(req,res)=>{
    try {
     const paymentIntent = await stripe.paymentIntents.retrieve(req.params.id);
@@ -83,9 +83,9 @@ orderRouter.get('/api/payment-intent/:id',auth,async(req,res)=>{
     return res.status(500).json({error:e.message});
    }
 });
-*/
 
-/*
+
+
 // POST route for creating a customer on Stripe
 orderRouter.post('/api/stripe/customers', async (req, res) => {
   try {
@@ -106,7 +106,7 @@ orderRouter.post('/api/stripe/customers', async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 });
-*/
+
 
 
 // GET route for fetching orders by buyer ID
